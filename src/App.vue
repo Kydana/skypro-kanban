@@ -1,8 +1,7 @@
-<script setup></script>
+<!-- <script setup></script>
 
 <template>
   <div class="wrapper">
-		<!-- pop-up start-->
 
 			<div class="pop-exit" id="popExit">
 				<div class="pop-exit__container">
@@ -269,7 +268,7 @@
 				</div>
 			</div>
 
-		<!-- pop-up end-->
+
 
 		<header class="header">
 			<div class="container">
@@ -284,7 +283,9 @@
 						<button class="header__btn-main-new _hover01" id="btnMainNew"><a href="#popNewCard">Создать новую задачу</a></button>
 						<a href="#user-set-target" class="header__user _hover02">Ivan Ivanov</a>
 						<div class="header__pop-user-set pop-user-set" id="user-set-target">
-							<!-- <a href="">x</a> -->
+
+              <a href="">x</a>
+              
 							<p class="pop-user-set__name">Ivan Ivanov</p>
 							<p class="pop-user-set__mail">ivan.ivanov@gmail.com</p>
 							<div class="pop-user-set__theme">
@@ -741,4 +742,4 @@
   <script src="js/script.js"></script>
 </template>
 
-<style scoped></style>
+<style scoped></style> -->
