@@ -34,4 +34,4 @@
       return acc;
     }, {});
   });
-</script>
+</script> 

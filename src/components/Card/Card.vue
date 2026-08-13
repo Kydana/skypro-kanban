@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
   // const props = defineProps({
   //   card: {
   //     type: Object,
@@ -6,16 +6,38 @@
   //   },
   // });
 
-  const getThemeClass = (topic) => {
+  // const getThemeClass = (topic) => {
+  //   switch (topic) {
+  //     case 'Web Design':
+  //       return '_orange';
+  //     case 'Research':
+  //       return '_green';
+  //     case 'Copywriting':
+  //       return '_purple';
+  //     default:
+  //       return '_orange';
+  //   }
+  // };
+
+  // 1. Описываем структуру объекта карточки
+  interface CardData {
+    topic: string;
+    title: string;
+    date: string;
+    link?: string; // знак '?' означает, что поле может быть необязательным
+  }
+
+  // 2. Передаем интерфейс в макрос через generic-типы <...>
+  defineProps<{
+    card: CardData;
+  }>();
+
+  const getThemeClass = (topic: string): string => {
     switch (topic) {
-      case 'Web Design':
-        return '_orange';
-      case 'Research':
-        return '_green';
-      case 'Copywriting':
-        return '_purple';
-      default:
-        return '_orange';
+      case 'Web Design': return '_orange';
+      case 'Research': return '_green';
+      case 'Copywriting': return '_purple';
+      default: return '_orange';
     }
   };
 </script>

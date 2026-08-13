@@ -12,11 +12,11 @@
       </div>
 
       <div v-else class="main__content">
-        <Column
+        <MainColumn
           v-for="status in statusList"
           :key="status"
           :title="status"
-          :cardList="cards.filter(card => card.status === status)"
+          :card-list="cards.filter(card => card.status === status)"
         />
       </div>
     </Main>
@@ -26,14 +26,14 @@
 <script setup>
   import { ref, onMounted } from 'vue';
   import { cardList } from "./mockc/tasks";
-  import './App.css';
+  import '../public/assets/main.css';
 
   import PopBrowse from '@/components/PopBrowse/PopBrowse.vue';
   import PopExit from '@/components/PopExit/PopExit.vue';
   import PopNewCard from '@/components/PopNewCard/PopNewCard.vue';
   import Main from '@/components/Main/Main.vue';
   import Header from '@/components/Header/Header.vue';
-  import Column from '@/components/Column/Column.vue';
+  import MainColumn from '@/components/Column/Column.vue';
 
 
   const statusList = [
@@ -43,6 +43,13 @@
     "Тестирование",
     "Готово",
   ];
+
+  // Функция, которая безопасно фильтрует карточки для шаблона
+  // const getCardsByStatus = (status) => {
+  //   if (!cards.value) return [];
+  //   return cards.value.filter(card => card.status === status);
+  // };
+
 
   const cards = ref(cardList);
   const isLoading = ref(true);
@@ -72,3 +79,4 @@
     }, 2000);
   });
 </script>
+
