@@ -1,55 +1,47 @@
-import { useState } from "react";
-import { cardList } from "./mockc/tasks";
-import './App.css';
-import PopBrowse from './components/PopBrowse/PopBrowse';
-import PopExit from './components/PopExit/PopExit';
-import PopNewCard from './components/PopNewCard/PopNewCard';
-import Main from './components/Main/Main';
-import Header from './components/Header/Header';
+import { useState } from 'react'
+import { cardList } from './mocks/tasks'
+import './App.css'
+import PopBrowse from './components/PopBrowse/PopBrowse'
+import PopExit from './components/PopExit/PopExit'
+import PopNewCard from './components/PopNewCard/PopNewCard'
+import Main from './components/Main/Main'
+import Header from './components/Header/Header'
 
-const ststusList = [
-  "Без статуса",
-  "Нужно сделать",
-  "В работе",
-  "Тестирование",
-  "Готово",
-];
+const ststusList = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
 
 function App() {
-
-  const [cards, setCards] = useState(cardList);
+  const [cards, setCards] = useState(cardList)
 
   const addCard = () => {
     const card = {
       id: Math.max(...cards.map((card) => card.id)) + 1,
-      topic: "Web Design",
-      title: "Название новой задачи",
+      topic: 'Web Design',
+      title: 'Название новой задачи',
       date: new Date().toLocaleDateString(),
-      status: "Без статуса",
-    };
-    setCards((prev) => [...prev, card]);
-  };
+      status: 'Без статуса',
+    }
+    setCards((prev) => [...prev, card])
+  }
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
+      setIsLoading(false)
+    }, 2000)
+  }, [])
 
   return (
     <div class="wrapper">
+      <PopExit />
 
-			<PopExit />
+      <PopNewCard />
 
-			<PopNewCard />
+      <PopBrowse />
 
-			<PopBrowse />
+      <Header addCard={addCard} />
 
-		  <Header addCard={addCard} />
-
-		  <Main>
+      <Main>
         {isLoading ? (
           <div class="loading">Данные загружаются...</div>
         ) : (
@@ -62,9 +54,8 @@ function App() {
           ))
         )}
       </Main>
-
     </div>
   )
-};
+}
 
-export default App;
+export default App

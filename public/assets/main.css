@@ -212,7 +212,8 @@ body {
   justify-content: space-between;
 }
 
-.pop-user-set__name {
+/* PopUser */
+/* .pop-user-set__name {
   color: #000;
   font-size: 14px;
   font-weight: 500;
@@ -274,7 +275,8 @@ body {
 }
 .pop-user-set button a {
   color: #565EEF;
-}
+} */
+/* PopUser */
 
 .pop-new-card {
   display: none;
@@ -713,7 +715,8 @@ body {
   display: none;
 }
 
-.header {
+/* Header */
+/* .header {
   width: 100%;
   margin: 0 auto;
   background-color: #FFFFFF;
@@ -775,7 +778,9 @@ body {
   transform: rotate(-45deg);
   margin: -6px 0 0 5px;
   padding: 0;
-}
+} */
+/* Header */
+
 .header__pop-user-set {
   display: none;
   position: absolute;
@@ -1002,7 +1007,8 @@ body {
     width: 100%;
     padding: 0 16px;
   }
-  .header__btn-main-new {
+  /* heafer */
+  /* .header__btn-main-new {
     z-index: 3;
     position: fixed;
     left: 16px;
@@ -1012,7 +1018,7 @@ body {
     height: 40px;
     border-radius: 4px;
     margin-right: 0;
-  }
+  } */
   .pop-new-card__container {
     padding: 0;
     justify-content: flex-start;

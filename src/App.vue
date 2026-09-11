@@ -7,16 +7,14 @@
     <Header @open-new-card="isNewCardModalOpen = true" @open-exit="isExitModalOpen = true" />
 
     <Main>
-      <div v-if="isLoading" class="loading">
-        Данные загружаются...
-      </div>
+      <div v-if="isLoading" class="loading">Данные загружаются...</div>
 
       <div v-else class="main__content">
         <MainColumn
           v-for="status in statusList"
           :key="status"
           :title="status"
-          :card-list="cards.filter(card => card.status === status)"
+          :card-list="cards.filter((card) => card.status === status)"
         />
       </div>
     </Main>
@@ -24,59 +22,50 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue';
-  import { cardList } from "./mockc/tasks";
-  import '../public/assets/main.css';
+import { ref, onMounted } from 'vue'
+import { cardList } from './mocks/tasks'
+import '../public/assets/main.css'
 
-  import PopBrowse from '@/components/PopBrowse/PopBrowse.vue';
-  import PopExit from '@/components/PopExit/PopExit.vue';
-  import PopNewCard from '@/components/PopNewCard/PopNewCard.vue';
-  import Main from '@/components/Main/Main.vue';
-  import Header from '@/components/Header/Header.vue';
-  import MainColumn from '@/components/Column/Column.vue';
+import PopBrowse from '@/components/PopBrowse/PopBrowse.vue'
+import PopExit from '@/components/PopExit/PopExit.vue'
+import PopNewCard from '@/components/PopNewCard/PopNewCard.vue'
+import Main from '@/components/Main/Main.vue'
+import Header from '@/components/Header/Header.vue'
+import MainColumn from '@/components/Column/Column.vue'
 
+const statusList = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
 
-  const statusList = [
-    "Без статуса",
-    "Нужно сделать",
-    "В работе",
-    "Тестирование",
-    "Готово",
-  ];
+// Функция, которая безопасно фильтрует карточки для шаблона
+// const getCardsByStatus = (status) => {
+//   if (!cards.value) return [];
+//   return cards.value.filter(card => card.status === status);
+// };
 
-  // Функция, которая безопасно фильтрует карточки для шаблона
-  // const getCardsByStatus = (status) => {
-  //   if (!cards.value) return [];
-  //   return cards.value.filter(card => card.status === status);
-  // };
+const cards = ref(cardList)
+const isLoading = ref(true)
 
-
-  const cards = ref(cardList);
-  const isLoading = ref(true);
-
-  const isExitModalOpen = ref(false);
-  const isNewCardModalOpen = ref(false);
-  const isBrowseModalOpen = ref(false);
+const isExitModalOpen = ref(false)
+const isNewCardModalOpen = ref(false)
+const isBrowseModalOpen = ref(false)
 
 // Функция добавления новой карточки
-  const addCard = (customData = null) => {
-    const nextId = cards.value.length > 0 ? Math.max(...cards.value.map(c => c.id)) + 1 : 1;
+const addCard = (customData = null) => {
+  const nextId = cards.value.length > 0 ? Math.max(...cards.value.map((c) => c.id)) + 1 : 1
 
-    const card = {
-      id: nextId,
-      topic: customData?.category || "Web Design",
-      title: customData?.title || "Название новой задачи",
-      date: new Date().toLocaleDateString(),
-      status: "Без статуса",
-    };
+  const card = {
+    id: nextId,
+    topic: customData?.category || 'Web Design',
+    title: customData?.title || 'Название новой задачи',
+    date: new Date().toLocaleDateString(),
+    status: 'Без статуса',
+  }
 
-    cards.value.push(card);
-  };
+  cards.value.push(card)
+}
 
-  onMounted(() => {
-    setTimeout(() => {
-      isLoading.value = false;
-    }, 2000);
-  });
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 2000)
+})
 </script>
-
