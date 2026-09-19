@@ -1,53 +1,39 @@
 <template>
   <div class="wrapper">
-		<!-- pop-up start-->
+    <ExitModal v-if="showExitModal" @close="showExitModal = false"/>
+    <NewCardModal/>
+    <TaskModal/>
+    <BaseHeader/>
 
-      <ExitModal/>
+    <TaskDesk>
+      <TaskColumn
+        v-for="column in columns"
+        :key="column.status"
+        :title="column.title"
+      >
 
-			<NewCardModal/>
+        <div v-if="getTasksByStatus(column.status).length === 0" class="empty-message">
+          Задач нет
+        </div>
 
-      <TaskModal/>
-
-		<!-- pop-up end-->
-
-		<BaseHeader/>
-
-    <div v-if="isLoading" class="loader-container">
-      <div class="loader-text">Данные загружаются...</div>
-    </div>
-
-		<TaskDesk v-else>
-      <TaskColumn title="Без статуса">
-				<Task propsName="Web Design" propsColor="orange" title="Название задачи" date="30.10.23"/>
-				<Task propsName="Research" propsColor="green" title="Название задачи" date="30.10.23" />
-        <Task propsName="Web Design" propsColor="orange" title="Название задачи" date="30.10.23" />
-				<Task propsName="Copywriting" propsColor="purple" title="Название задачи" date="30.10.23" />
-        <Task propsName="Web Design" propsColor="orange" title="Название задачи" date="30.10.23" />
-      </TaskColumn>
-
-      <TaskColumn title="Нужно сделать">
-        <Task propsName="Research" propsColor="green" title="Название задачи" date="30.10.23" />
-      </TaskColumn>
-
-      <TaskColumn title="В работе">
-        <Task propsName="Research" propsColor="green" title="Название задачи" date="30.10.23" />
-        <Task propsName="Copywriting" propsColor="purple" title="Название задачи" date="30.10.23" />
-        <Task propsName="Web Design" propsColor="orange" title="Название задачи" date="30.10.23"/>
-      </TaskColumn>
-
-      <TaskColumn title="Тестирование">
-        <Task propsName="Research" propsColor="green" title="Название задачи" date="30.10.23" />
-      </TaskColumn>
-
-      <TaskColumn title="Готово">
-        <Task propsName="Research" propsColor="green" title="Название задачи" date="30.10.23" />
+        <template v-else>
+          <Task
+            v-for="task in getTasksByStatus(column.status)"
+            :key="task.id"
+            :categoryName="task.topic"
+            :categoryColor="getColorByTopic(task.topic)"
+            :title="task.title"
+            :date="task.date"
+          />
+        </template>
       </TaskColumn>
     </TaskDesk>
   </div>
-
 </template>
 
 <script>
+import { ref } from "vue";
+import { tasks as initialTasks } from '@/mocks/tasks.js';
 import BaseHeader from '@/components/Header/BaseHeader.vue';
 import ExitModal from '@/components/PopExit/ExitModal.vue';
 import NewCardModal from '@/components/PopNewCard/NewCardModal.vue';
@@ -56,8 +42,7 @@ import TaskDesk from '@/components/Main/TaskDesk.vue';
 import TaskColumn from '@/components/Column/TaskColumn.vue';
 import Task from '@/components/Card/Task.vue';
 
-import '@/assets/css/main.css'
-// import '@/assets/css/main_dark.css'
+import '@/assets/css/main.css';
 
 export default {
   name: 'HomeView',
@@ -70,34 +55,55 @@ export default {
     TaskColumn,
     Task,
   },
-  data() {
+  setup() {
+    const showExitModal = ref(false);
+
+    const allTasks = ref(initialTasks);
+
+    const columns = [
+      { status: "Без статуса", title: "Без статуса" },
+      { status: "Нужно сделать", title: "Нужно сделать" },
+      { status: "В работе", title: "В работе" },
+      { status: "Тестирование", title: "Тестирование" },
+      { status: "Готово", title: "Готово" }
+    ];
+
+    const getTasksByStatus = (status) => {
+      return allTasks.value.filter(task => task.status === status);
+    };
+
+    const getColorByTopic = (topic) => {
+      const colors = {
+        "Web Design": "orange",
+        Research: "green",
+        Copywriting: "purple"
+      };
+      return colors[topic] || "orange";
+    };
+
     return {
-      isLoading: true
-    }
+      showExitModal,
+      columns,
+      getTasksByStatus,
+      getColorByTopic,
+    };
   },
-
-  mounted() {
-
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
-  }
 }
 </script>
 
 <style scoped>
-.loader-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50vh;
-  width: 100%;
-}
-
-.loader-text {
-  font-size: 24px;
-  font-weight: 600;
+.empty-message {
+  padding: 20px;
+  text-align: center;
   color: #94A6BE;
-  letter-spacing: 0.5px;
+  font-size: 14px;
+  background: #ffffff;
+  border: 1px dashed #94A6BE;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
