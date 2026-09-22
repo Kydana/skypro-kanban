@@ -12,8 +12,8 @@
 					<button class="header__btn-main-new _hover01" id="btnMainNew">
             <a href="#popNewCard">Создать новую задачу</a>
           </button>
-					<a href="#user-set-target" class="header__user _hover02">Ivan Ivanov</a>
-					<div class="header__pop-user-set pop-user-set" id="user-set-target">
+					<a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleMenu"> Ivan Ivanov </a>
+					<div v-if="isMenuOpen" class="header__pop-user-set pop-user-set" id="user-set-target">
 						<!-- <a href="">x</a> -->
 						<p class="pop-user-set__name">Ivan Ivanov</p>
 						<p class="pop-user-set__mail">ivan.ivanov@gmail.com</p>
@@ -21,7 +21,9 @@
 							<p>Темная тема</p>
 							<input type="checkbox" class="checkbox" name="checkbox">
 						</div>
-						<button type="button" class="_hover03"><a href="#popExit">Выйти</a></button>
+						<button type="button" class="_hover03" @click.prevent="openExit">
+              <a href="#popExit">Выйти</a>
+            </button>
 					</div>
 				</nav>
 			</div>
@@ -30,6 +32,19 @@
 </template>
 
 <script setup>
+import { ref, defineEmits } from 'vue';
+
+const isMenuOpen = ref(false);
+const toggleMenu = () => {
+  isMenuOpen.value =!isMenuOpen.value;
+};
+
+const emit = defineEmits(['open-exit-modal']);
+const openExit = () => {
+  isMenuOpen.value = false; // закрываем маленькое меню
+  emit('open-exit-modal');   // отправляем сигнал родителю
+};
+
 </script>
 
 <style scoped>

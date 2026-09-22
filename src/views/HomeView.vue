@@ -3,7 +3,7 @@
     <ExitModal v-if="showExitModal" @close="showExitModal = false"/>
     <NewCardModal/>
     <TaskModal/>
-    <BaseHeader/>
+    <BaseHeader @open-exit-modal="showExitModal = true"/>
 
     <TaskDesk>
       <TaskColumn
@@ -33,7 +33,6 @@
 
 <script>
 import { ref } from "vue";
-import { tasks as initialTasks } from '@/mocks/tasks.js';
 import BaseHeader from '@/components/Header/BaseHeader.vue';
 import ExitModal from '@/components/PopExit/ExitModal.vue';
 import NewCardModal from '@/components/PopNewCard/NewCardModal.vue';
@@ -58,7 +57,9 @@ export default {
   setup() {
     const showExitModal = ref(false);
 
-    const allTasks = ref(initialTasks);
+    const allTasks = ref([
+      { id: 1, title: "Тестовая задача", status: "Нужно сделать", topic: "Web Design", date: "22.09.2026" }
+    ]);
 
     const columns = [
       { status: "Без статуса", title: "Без статуса" },
