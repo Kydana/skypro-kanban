@@ -7,11 +7,11 @@
 				</div>
 				<form class="pop-exit__form" id="formExit" action="#">
 					<div class="pop-exit__form-group">
-						<button class="pop-exit__exit-yes _hover01" id="exitYes" >
-              <a @click="logout" type="tertiary" >Да, выйти</a>
+						<button type="button" class="pop-exit__exit-yes _hover01" id="exitYes" @click="logout">
+              Да, выйти
             </button>
-						<button class="pop-exit__exit-no _hover03" id="exitNo">
-              <a href="main.html">Нет, остаться</a>
+						<button type="button" class="pop-exit__exit-no _hover03" id="exitNo" @click="stay">
+              Нет, остаться
             </button>
 					</div>
 				</form>
@@ -20,15 +20,18 @@
 	</div>
 </template>
 
-<script>
-import { RouterLink, useRoute } from 'vue-router';
+<script setup>
+import { useRouter } from 'vue-router';
 
-const router =useRoute()
+const router =useRouter()
 
 function logout(e) {
   e.preventDefault()
-  localStorage.removeItem('userIn')
-  router.push('/sign-in')
+  localStorage.removeItem('userInfo')
+  router.push('/sign-up')
+}
+function stay() {
+  router.push('/')
 }
 </script>
 
@@ -105,7 +108,7 @@ function logout(e) {
   line-height: 21px;
   font-weight: 500;
   letter-spacing: -0.14px;
-  color: #FFFFFF;
+  color: #565EEF;
 }
 .pop-exit__form-group {
   width: 100%;

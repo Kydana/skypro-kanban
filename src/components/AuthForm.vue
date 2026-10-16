@@ -196,6 +196,11 @@ const handleSubmit = () => {
   text-decoration: underline;
 }
 
+.modal__link {
+  cursor: pointer;
+  outline: none;
+}
+
 @media screen and (max-width: 375px) {
   .modal {
     background-color: #FFFFFF;

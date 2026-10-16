@@ -1,7 +1,7 @@
 <template>
   <div class="not-found">
     <div class="content">
-      <h1>404</h1>
+      <h1 class="not-found_text">404</h1>
       <div class="error-message">
         <span class="en">Page Not Found</span>
         <span class="ru">Страница не найдена</span>
@@ -25,9 +25,13 @@
 </script>
 
 <style scoped>
+.not-found_text {
+  font-size: 50px;
+  color: #565EEF;
+}
 .not-found {
    height: 100vh;
-   background: #0a192f;
+   background: #EAEEF6;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -51,7 +55,7 @@
 
 .error-message {
    margin: 2rem 0;
-   color: #ccd6f6;
+   color: #565EEF;
 }
 
 .en {
@@ -77,8 +81,8 @@
 .home-button {
    display: inline-block;
    padding: 1rem 2rem;
-   background: linear-gradient(45deg, #64ffda, #00b4d8);
-   color: #0a192f;
+   background: linear-gradient(45deg, #565EEF, #00b4d8);
+   color: #ffffff;
    text-decoration: none;
    border-radius: 50px;
    font-weight: bold;
