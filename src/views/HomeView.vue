@@ -28,6 +28,7 @@
         </template>
       </TaskColumn>
     </TaskDesk>
+    <RouterView />
   </div>
 </template>
 

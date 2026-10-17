@@ -41,8 +41,8 @@ const toggleMenu = () => {
 
 const emit = defineEmits(['open-exit-modal']);
 const openExit = () => {
-  isMenuOpen.value = false; // закрываем маленькое меню
-  emit('open-exit-modal');   // отправляем сигнал родителю
+  isMenuOpen.value = false;
+  emit('open-exit-modal');
 };
 
 </script>
