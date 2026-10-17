@@ -23,6 +23,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
+const emit = defineEmits(['close'])
 const router =useRouter()
 
 function logout(e) {
@@ -31,7 +32,7 @@ function logout(e) {
   router.push('/sign-up')
 }
 function stay() {
-  router.push('/')
+  emit('close')
 }
 </script>
 
