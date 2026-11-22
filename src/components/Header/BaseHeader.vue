@@ -3,26 +3,27 @@
 		<div class="container">
 			<div class="header__block">
 				<div class="header__logo _show _light">
-					<a href="" target="_self"><img src="@/assets/images/logo.png" alt="logo"></a>
+					<router-link to="/"><img src="@/assets/images/logo.png" alt="logo" /></router-link>
 				</div>
 				<div class="header__logo _dark">
-					<a href="" target="_self"><img src="@/assets/images/logo_dark.png" alt="logo"></a>
+					<router-link to="/"><img src="@/assets/images/logo_dark.png" alt="logo" /></router-link>
 				</div>
-				<nav class="header__nav">
+				<nav class="header__nav" ref="headerNav">
 					<button class="header__btn-main-new _hover01" id="btnMainNew">
-            <a href="#popNewCard">Создать новую задачу</a>
+            <router-link to="/add">Создать новую задачу</router-link>
           </button>
-					<a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleMenu"> Ivan Ivanov </a>
+					<a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleMenu">{{ userName }}</a>
 					<div v-if="isMenuOpen" class="header__pop-user-set pop-user-set" id="user-set-target">
 						<!-- <a href="">x</a> -->
-						<p class="pop-user-set__name">Ivan Ivanov</p>
-						<p class="pop-user-set__mail">ivan.ivanov@gmail.com</p>
+						<p class="pop-user-set__name">{{ userName }}</p>
+						<p class="pop-user-set__mail">{{ userEmail }}</p>
 						<div class="pop-user-set__theme">
 							<p>Темная тема</p>
 							<input type="checkbox" class="checkbox" name="checkbox">
 						</div>
 						<button type="button" class="_hover03" @click.prevent="openExit">
-              <a href="#popExit">Выйти</a>
+              <!-- <a href="#popExit">Выйти</a> -->
+              Выйти
             </button>
 					</div>
 				</nav>
@@ -32,18 +33,67 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
-
-const isMenuOpen = ref(false);
-const toggleMenu = () => {
-  isMenuOpen.value =!isMenuOpen.value;
-};
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 const emit = defineEmits(['open-exit-modal']);
+
+const isMenuOpen = ref(false);
+const headerNav = ref(null);
+
+// Реактивно храним данные пользователя из localStorage
+const user = ref(null);
+
+const loadUserFromStorage = () => {
+  try {
+    const rawUser = localStorage.getItem('user');
+    user.value = rawUser ? JSON.parse(rawUser) : null;
+  } catch {
+    user.value = null;
+  }
+};
+
+// Вычисляем имя и логин/почту (подставляем заглушку, если пользователь не найден)
+const userName = computed(() => user.value?.name || 'Пользователь');
+const userEmail = computed(() => user.value?.login || '');
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
+
 const openExit = () => {
   isMenuOpen.value = false;
   emit('open-exit-modal');
 };
+
+// Закрытие меню при клике вне блока навигации
+const handleClickOutside = (event) => {
+  if (headerNav.value && !headerNav.value.contains(event.target)) {
+    isMenuOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  loadUserFromStorage();
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+
+// import { ref, defineEmits } from 'vue';
+
+// const isMenuOpen = ref(false);
+// const toggleMenu = () => {
+//   isMenuOpen.value =!isMenuOpen.value;
+// };
+
+// const emit = defineEmits(['open-exit-modal']);
+// const openExit = () => {
+//   isMenuOpen.value = false;
+//   emit('open-exit-modal');
+// };
 
 </script>
 
