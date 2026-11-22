@@ -6,15 +6,16 @@
 							<h3 class="pop-new-card__ttl">Создание задачи</h3>
 							<a href="#" class="pop-new-card__close">&#10006;</a>
 							<div class="pop-new-card__wrap">
-								<form class="pop-new-card__form form-new" id="formNewCard" action="#">
+								<form class="pop-new-card__form form-new" id="formNewCard" action="#" @submit.prevent="handleSubmit">
 									<div class="form-new__block">
 										<label for="formTitle" class="subttl">Название задачи</label>
-										<input class="form-new__input" type="text" name="name" id="formTitle" placeholder="Введите название задачи..." autofocus>
+										<input class="form-new__input" type="text" name="name" id="formTitle" placeholder="Введите название задачи..." autofocus v-model="title">
 									</div>
 									<div class="form-new__block">
 										<label for="textArea" class="subttl">Описание задачи</label>
-										<textarea class="form-new__area" name="text" id="textArea"  placeholder="Введите описание задачи..."></textarea>
+										<textarea class="form-new__area" name="text" id="textArea"  placeholder="Введите описание задачи..." v-model="description"></textarea>
 									</div>
+                  <p v-if="error" class="form-new__error">{{ error }}</p>
 								</form>
 								<div class="pop-new-card__calendar calendar">
 									<p class="calendar__ttl subttl">Даты</p>
@@ -104,7 +105,7 @@
 									</div>
 								</div>
 							</div>
-							<button class="form-new__create _hover01" id="btnCreate">Создать задачу</button>
+							<button class="form-new__create _hover01" id="btnCreate" @click="handleSubmit">Создать задачу</button>
 						</div>
 					</div>
 				</div>
@@ -112,12 +113,43 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { createTask } from '@/services/api'
+
 export default {
-  setup () {
+  name: 'NewCardModal',
+  setup() {
+    const router = useRouter()
+    const title = ref('')
+    const description = ref('')
+    const error = ref('')
 
+    const handleSubmit = async () => {
+      if (!title.value.trim()) {
+        error.value = 'Введите название задачи'
+        return
+      }
 
-    return {}
-  }
+      error.value = ''
+      try {
+        await createTask({
+          title: title.value,
+          description: description.value,
+        })
+        router.push('/')
+      } catch (err) {
+        error.value = err.message
+      }
+    }
+
+    return {
+      title,
+      description,
+      error,
+      handleSubmit,
+    }
+  },
 }
 </script>
 

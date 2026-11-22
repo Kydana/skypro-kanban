@@ -10,7 +10,12 @@
 
             <template v-else>
               <TaskColumn title="Без статуса">
-                <Task propsName="Web Design" propsColor="orange" title="Название задачи" date="30.10.23" />
+                <Task
+                propsName="Web Design"
+                propsColor="orange"
+                title="Название задачи"
+                date="30.10.23"
+                />
                 <Task propsName="Research" propsColor="green" title="Название задачи" date="30.10.23" />
                 <Task propsName="Web Design" propsColor="orange" title="Название задачи" date="30.10.23" />
                 <Task propsName="Copywriting" propsColor="purple" title="Название задачи" date="30.10.23" />

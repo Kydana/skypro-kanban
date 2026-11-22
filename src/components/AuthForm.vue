@@ -14,14 +14,16 @@
               type="text"
               v-model="name"
               placeholder="Имя"
+              @input="errorMessage = ''"
               required
             >
 
             <input
               class="modal__input"
-              type="email"
+              type="text"
               v-model="email"
               placeholder="Эл. почта"
+              @input="errorMessage = ''"
               required
             >
 
@@ -30,11 +32,23 @@
               type="password"
               v-model="password"
               placeholder="Пароль"
+              @input="errorMessage = ''"
               required
             >
 
-            <button class="modal__btn-enter _hover01" type="submit">
-              {{ isLoginMode ? 'Войти' : 'Зарегистрироваться' }}
+            <!-- Вывод ошибки пользователю -->
+            <p v-if="errorMessage" class="modal__error" style="color: #f84d4d; font-size: 12px; margin-top: 8px; text-align: center;">
+              {{ errorMessage }}
+            </p>
+
+            <button class="modal__btn-enter _hover01" type="submit" :disabled="isLoading">
+              {{
+                isLoading
+                  ? 'Загрузка...'
+                  : isLoginMode
+                    ? 'Войти'
+                    : 'Зарегистрироваться'
+              }}
             </button>
 
             <div class="modal__form-group">
@@ -55,37 +69,74 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { signIn, signUp } from '@/services/auth'; // проверьте путь к вашему файлу с API
 
-const isLoginMode = ref(true)
+const router = useRouter();
 
-const email = ref('')
-const password = ref('')
-const name = ref('')
+const isLoginMode = ref(true);
+
+const email = ref('');
+const password = ref('');
+const name = ref('');
+
+const errorMessage = ref('');
+const isLoading = ref(false);
 
 const toggleMode = () => {
-  isLoginMode.value = !isLoginMode.value
-  email.value = ''
-  password.value = ''
-  name.value = ''
-}
+  isLoginMode.value = !isLoginMode.value;
+  email.value = '';
+  password.value = '';
+  name.value = '';
+  errorMessage.value = '';
+};
 
-const handleSubmit = () => {
-  if (isLoginMode.value) {
-    const loginData = {
-      email: email.value,
-      password: password.value
-    }
-    console.log('Вход с данными:', loginData)
-  } else {
-    const registerData = {
-      name: name.value,
-      email: email.value,
-      password: password.value
-    }
-    console.log('Регистрация с данными:', registerData)
+const handleSubmit = async () => {
+  errorMessage.value = '';
+
+  const trimmedLogin = email.value.trim();
+  const trimmedPassword = password.value.trim();
+  const trimmedName = name.value.trim();
+
+  if (!trimmedLogin || !trimmedPassword || (!isLoginMode.value && !trimmedName)) {
+    errorMessage.value = 'Заполните все обязательные поля';
+    return;
   }
-}
+
+  isLoading.value = true;
+
+  try {
+    let userData;
+
+    if (isLoginMode.value) {
+      // Вход через API (передаем email в поле login, как требует сервер)
+      userData = await signIn({
+        login: trimmedLogin,
+        password: trimmedPassword,
+      });
+    } else {
+      // Регистрация через API
+      userData = await signUp({
+        name: trimmedName,
+        login: trimmedLogin,
+        password: trimmedPassword,
+      });
+    }
+
+    // Сохраняем данные пользователя и токен в localStorage
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', userData.token);
+
+    // Переходим на главную страницу с канбан-доской
+    router.push('/');
+  } catch (error) {
+    // Показываем ошибку от API (например, "Неверный логин или пароль" или "Пользователь уже существует")
+    errorMessage.value = error.message || 'Произошла ошибка при авторизации';
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
 
 <style scoped>

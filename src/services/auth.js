@@ -1,34 +1,43 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API_URL = 'https://wedev-api.sky.pro/api/user'
+const API_URL = 'https://wedev-api.sky.pro/api/user';
 
-export async function signIn(userData) {
-   try {
-      const data = await axios.post(API_URL + '/login', userData, {
-         headers: {
-            'Content-Type': '',
-         },
-      });
-   return data.data.user;
-   } catch (error) {
-      throw new Error(error.response.data.error);
-   }
+// Авторизация пользователя
+export async function signIn({ login, password }) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/login`,
+      { login, password },
+      {
+        headers: {
+          'Content-Type': '',
+        },
+      }
+    );
+    return response.data.user;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Ошибка при входе в систему', {
+      cause: error,
+    });
+  }
 }
 
+// Регистрация нового пользователя
 export async function signUp({ name, login, password }) {
-   try {
-      const data = await axios.post(
-         API_URL,
-         { login, name, password },
-         {
-         headers: {
-            'Content-Type': '',
-         },
+  try {
+    const response = await axios.post(
+      API_URL,
+      { login, name, password },
+      {
+        headers: {
+          'Content-Type': '',
+        },
       }
-   );
-   return data.data.user;
-   } catch (error) {
-      console.log(error);
-      throw new Error(error.response.data.error);
-   }
+    );
+    return response.data.user;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Ошибка при регистрации', {
+      cause: error,
+    });
+  }
 }

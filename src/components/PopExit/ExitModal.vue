@@ -23,17 +23,32 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
-const emit = defineEmits(['close'])
-const router =useRouter()
+const router = useRouter();
 
-function logout(e) {
-  e.preventDefault()
-  localStorage.removeItem('userInfo')
-  router.push('/sign-up')
+function logout() {
+  // Удаляем все данные авторизации из хранилища
+  localStorage.removeItem('user');
+  localStorage.removeItem('token');
+
+  // Перенаправляем на страницу входа (проверьте точный путь в вашем router/index.js)
+  router.push('/sign-in');
 }
+
 function stay() {
-  emit('close')
+  router.push('/');
 }
+
+// const emit = defineEmits(['close'])
+// const router =useRouter()
+
+// function logout(e) {
+//   e.preventDefault()
+//   localStorage.removeItem('userInfo')
+//   router.push('/sign-up')
+// }
+// function stay() {
+//   emit('close')
+// }
 </script>
 
 <style scoped>
